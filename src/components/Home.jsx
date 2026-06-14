@@ -158,12 +158,26 @@ function Home({
                       <span className="badge">{cartCount}</span>
                     )}
                   </button>
-                  <Link to="/login">
-                    <button className="nav-btn">Sign In</button>
-                  </Link>
-                  <Link to="/signup">
-                    <button className="nav-btn">Sign Up</button>
-                  </Link>
+                  {localStorage.getItem("isLoggedIn") ? (
+                    <Link to="/profile">
+                      <button className="nav-btn">
+                        👤 <span className="profile-text">Profile</span>
+                      </button>
+                    </Link>
+                  ) : (
+                    <Link to="/login">
+                      <button className="nav-btn">
+                        🔑 <span className="signin-text">Sign In</span>
+                      </button>
+                    </Link>
+                  )}
+                  {!localStorage.getItem("isLoggedIn") && (
+                    <Link to="/signup">
+                      <button className="nav-btn">
+                        ✨ <span className="signup-text">Sign Up</span>
+                      </button>
+                    </Link>
+                  )}
                   <button
                     className="nav-btn primary"
                     onClick={() =>

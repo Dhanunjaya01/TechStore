@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Wishlist from "./components/Wishlist";
 import products from "./data";
+import Profile from "./components/Profile";
 
 function App() {
   const [wishlist, setWishlist] = useState([]);
@@ -63,6 +64,7 @@ function App() {
           />
         }
       />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 }

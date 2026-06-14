@@ -1256,3 +1256,26 @@ body {
     justify-content: center;
   }
 }
+
+@media (max-width: 768px) {
+
+  .nav-links{
+    display:none;
+  }
+
+  .nav-actions{
+    gap:8px;
+  }
+
+  .nav-btn{
+    padding:8px 12px;
+    font-size:13px;
+  }
+
+  .profile-text,
+  .signin-text,
+  .signup-text{
+    display:none;
+  }
+
+}

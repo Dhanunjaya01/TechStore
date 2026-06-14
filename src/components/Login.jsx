@@ -24,10 +24,11 @@ function Login() {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (user && user.email === email && user.password === password) {
+      localStorage.setItem("isLoggedIn", "true");
+
       alert(`🎉 Welcome Back ${user.name}!`);
-      navigate("/");
-    } else {
-      alert("❌ Invalid Email or Password");
+
+      navigate("/profile");
     }
   };
 

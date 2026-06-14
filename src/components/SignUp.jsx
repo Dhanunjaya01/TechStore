@@ -59,9 +59,11 @@ function SignUp() {
 
     localStorage.setItem("user", JSON.stringify(user));
 
+    localStorage.setItem("isLoggedIn", "true");
+
     alert(`🎉 Welcome ${name}! Account Created Successfully`);
 
-    navigate("/login");
+    navigate("/profile");
   };
 
   return (
