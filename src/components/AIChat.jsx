@@ -1,103 +1,144 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./AIChat.css";
 
 function AIChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [typing, setTyping] = useState(false);
 
   const [messages, setMessages] = useState([
     {
-      text: "👋 Welcome to TechStore! Ask me about products, prices, offers, delivery, warranty, returns or support.",
       sender: "bot",
+      text: "👋 Welcome to TechStore! What are you looking for today?",
     },
   ]);
+
+  const chatEndRef = useRef(null);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
+
+  const getReply = (msg) => {
+    msg = msg.toLowerCase();
+
+    if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
+      return "👋 Hello! How can I help you today?";
+    }
+
+    if (msg.includes("phone") || msg.includes("mobile")) {
+      return "📱 Nice! Do you prefer Apple, Samsung, Xiaomi or Nothing?";
+    }
+
+    if (msg.includes("apple")) {
+      return "🍎 We currently have iPhone 17 Pro Max, AirPods Pro 2, Apple Watch Ultra 2 and iPad Pro M4.";
+    }
+
+    if (msg.includes("samsung")) {
+      return "📱 Samsung Galaxy S25 Ultra, Galaxy Watch 6 and Galaxy Buds are available.";
+    }
+
+    if (msg.includes("laptop") || msg.includes("computer")) {
+      return "💻 Are you looking for Gaming, Student or Office laptops?";
+    }
+
+    if (msg.includes("gaming")) {
+      return "🎮 ASUS ROG, Lenovo Legion and Acer Predator are our top gaming laptops.";
+    }
+
+    if (msg.includes("headphone") || msg.includes("earbuds")) {
+      return "🎧 Sony XM5, AirPods Pro 2, Bose and Samsung Buds are available.";
+    }
+
+    if (msg.includes("watch") || msg.includes("smartwatch")) {
+      return "⌚ Apple Watch Ultra 2 and Samsung Galaxy Watch 6 are available.";
+    }
+
+    if (msg.includes("offer") || msg.includes("discount")) {
+      return "🔥 Today's best deals offer up to 30% OFF on selected products.";
+    }
+
+    if (msg.includes("delivery") || msg.includes("shipping")) {
+      return "🚚 Delivery usually takes 2-7 business days.";
+    }
+
+    if (msg.includes("return") || msg.includes("refund")) {
+      return "↩️ Easy 7-day return policy is available.";
+    }
+
+    if (msg.includes("warranty")) {
+      return "🛡️ Most products include 1-2 years manufacturer warranty.";
+    }
+
+    if (msg.includes("payment")) {
+      return "💳 We accept UPI, Debit Card, Credit Card, Net Banking and COD.";
+    }
+
+    if (msg.includes("thanks") || msg.includes("thank you")) {
+      return "😊 You're welcome! Happy shopping at TechStore.";
+    }
+
+    return "🤖 Tell me what you're interested in:\n📱 Smartphones\n💻 Laptops\n🎧 Headphones\n⌚ Smart Watches\n📺 TVs";
+  };
 
   const sendMessage = () => {
     if (!message.trim()) return;
 
-    const userMsg = message.toLowerCase();
+    const userMessage = message;
 
-    let botReply =
-      "🤖 Sorry, I didn't understand that. Please ask about products, pricing, delivery, warranty, returns or support.";
-
-    if (
-      userMsg.includes("hello") ||
-      userMsg.includes("hi") ||
-      userMsg.includes("hey")
-    ) {
-      botReply = "👋 Hello! Welcome to TechStore.";
-    } else if (userMsg.includes("products") || userMsg.includes("items")) {
-      botReply =
-        "🛍️ We sell Smartphones, Laptops, Smart Watches, Headphones, Tablets and Accessories.";
-    } else if (userMsg.includes("iphone")) {
-      botReply =
-        "📱 We have the latest Apple iPhone models with special discounts.";
-    } else if (userMsg.includes("samsung")) {
-      botReply =
-        "📱 Samsung Galaxy smartphones, tablets and smartwatches are available.";
-    } else if (userMsg.includes("laptop") || userMsg.includes("computer")) {
-      botReply = "💻 We offer Dell, HP, Lenovo, ASUS, Acer and Apple MacBooks.";
-    } else if (userMsg.includes("sony")) {
-      botReply =
-        "🎧 Sony headphones, cameras and PlayStation consoles are available.";
-    } else if (userMsg.includes("price") || userMsg.includes("cost")) {
-      botReply =
-        "💰 Please tell me the product name and I'll help with pricing.";
-    } else if (
-      userMsg.includes("offer") ||
-      userMsg.includes("discount") ||
-      userMsg.includes("deal")
-    ) {
-      botReply =
-        "🔥 Exciting discounts are available on selected TechStore products.";
-    } else if (userMsg.includes("delivery") || userMsg.includes("shipping")) {
-      botReply =
-        "🚚 Delivery usually takes 2-7 business days depending on your location.";
-    } else if (userMsg.includes("warranty") || userMsg.includes("guarantee")) {
-      botReply =
-        "🛡️ Most products come with 1 to 2 years manufacturer warranty.";
-    } else if (userMsg.includes("return") || userMsg.includes("refund")) {
-      botReply =
-        "↩️ Products can be returned within 7 days according to our return policy.";
-    } else if (
-      userMsg.includes("payment") ||
-      userMsg.includes("upi") ||
-      userMsg.includes("card")
-    ) {
-      botReply =
-        "💳 We accept UPI, Credit Cards, Debit Cards, Net Banking and Cash on Delivery.";
-    } else if (userMsg.includes("support") || userMsg.includes("help")) {
-      botReply =
-        "📞 TechStore Support is available 24/7 for customer assistance.";
-    } else if (userMsg.includes("thank") || userMsg.includes("thanks")) {
-      botReply = "😊 You're welcome. Happy shopping at TechStore!";
-    }
-
-    setMessages([
-      ...messages,
-      { text: message, sender: "user" },
-      { text: botReply, sender: "bot" },
+    setMessages((prev) => [
+      ...prev,
+      {
+        sender: "user",
+        text: userMessage,
+      },
     ]);
 
     setMessage("");
+    setTyping(true);
+
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "bot",
+          text: getReply(userMessage),
+        },
+      ]);
+
+      setTyping(false);
+    }, 1000);
   };
 
   return (
     <>
-      {/* Floating Button */}
       <button className="chat-toggle" onClick={() => setIsOpen(!isOpen)}>
         🤖
       </button>
 
-      {/* Chat Window */}
       {isOpen && (
         <div className="chat-box">
           <div className="chat-header">
-            <h3>TechStore AI</h3>
+            <div>
+              <h3>TechStore AI</h3>
+              <span>Online</span>
+            </div>
 
             <button className="close-btn" onClick={() => setIsOpen(false)}>
               ✕
             </button>
+          </div>
+
+          <div className="quick-actions">
+            <button onClick={() => setMessage("Smartphones")}>📱 Phone</button>
+
+            <button onClick={() => setMessage("Laptop")}>💻 Laptop</button>
+
+            <button onClick={() => setMessage("Headphones")}>🎧 Audio</button>
+
+            <button onClick={() => setMessage("Offers")}>🔥 Offers</button>
           </div>
 
           <div className="chat-body">
@@ -111,6 +152,16 @@ function AIChat() {
                 {msg.text}
               </div>
             ))}
+
+            {typing && (
+              <div className="typing">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            )}
+
+            <div ref={chatEndRef}></div>
           </div>
 
           <div className="chat-footer">
@@ -122,7 +173,7 @@ function AIChat() {
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
 
-            <button onClick={sendMessage}>Send</button>
+            <button onClick={sendMessage}>➤</button>
           </div>
         </div>
       )}

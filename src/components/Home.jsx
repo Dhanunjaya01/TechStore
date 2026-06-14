@@ -6,16 +6,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import AIChat from "./AIChat";
 
-function Home() {
+function Home({
+  wishlist,
+  toggleWishlist,
+  cartItems,
+  addToCart,
+  setCartItems,
+}) {
   //BRANDS
   const allBrands = [...new Set(products.map((p) => p.brand))];
-
-  // State
-  // Cart - array of products in cart
-  const [cartItems, setCartItems] = useState([]);
-
-  // Wishlist - array of product IDs that are wishlisted
-  const [wishlist, setWishlist] = useState([]);
 
   // Search - what user types in search box
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,46 +31,27 @@ function Home() {
   // NEW: Cart Sidebar Toggle
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  function addToCart(product) {
-    //Check if Cart Item Exists
-    const existingItem = cartItems.find((item) => item.id === product.id);
-
-    if (existingItem) {
-      //PRODUCT IS THERE IN THE CART
-      setCartItems(
-        cartItems.map(
-          (
-            item, //[ARRAY OF OBJECTS]
-          ) =>
-            item.id === product.id
-              ? { ...item, quantity: item.quantity + 1 }
-              : item,
-        ),
-      );
-    } else {
-      //PRODUCT NOT THERE
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
-    }
-  }
-
   // NEW: Remove item from cart
   function removeFromCart(productId) {
-    setCartItems(cartItems.filter((item) => item.id !== productId));
-  }
-
-  // NEW: Update quantity in cart
-  function updateQuantity(productId, newQuantity) {
-    if (newQuantity < 1) {
-      removeFromCart(productId);
-      return;
-    }
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item,
-      ),
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.id !== productId),
     );
   }
-
+  // NEW: Update quantity in cart
+  function updateQuantity(productId, change) {
+    setCartItems((prevItems) =>
+      prevItems
+        .map((item) =>
+          item.id === productId
+            ? {
+                ...item,
+                quantity: item.quantity + change,
+              }
+            : item,
+        )
+        .filter((item) => item.quantity > 0),
+    );
+  }
   //Calculate Total number of Cart ITEMS
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
@@ -82,16 +62,6 @@ function Home() {
   );
 
   //WISHLIST FUNCTION
-
-  function toggleWishlist(productID) {
-    if (wishlist.includes(productID)) {
-      //Already Existing - Remove It
-      setWishlist(wishlist.filter((id) => id !== productID));
-    } else {
-      //NOT IN THE WISHLIST - JUST ADD IT
-      setWishlist([...wishlist, productID]);
-    }
-  }
 
   //STEP 1 : FILTER BASED ON SEARCH AND BRAND
 
@@ -134,8 +104,8 @@ function Home() {
                 <ul className="nav-links">
                   <li>
                     <a href="#products" className="nav-link">
-  Products
-</a>
+                      Products
+                    </a>
                   </li>
                   <li>
                     <a href="#" className="nav-link">
@@ -169,12 +139,14 @@ function Home() {
                   </button>
 
                   {/* Wishlist Button with Count */}
-                  <button className="nav-btn icon-btn">
-                    ♡
-                    {wishlist.length > 0 && (
-                      <span className="badge">{wishlist.length}</span>
-                    )}
-                  </button>
+                  <Link to="/wishlist">
+                    <button className="nav-btn icon-btn">
+                      ❤️
+                      {wishlist.length > 0 && (
+                        <span className="badge">{wishlist.length}</span>
+                      )}
+                    </button>
+                  </Link>
 
                   {/* Cart Button with Count */}
                   <button
@@ -192,7 +164,16 @@ function Home() {
                   <Link to="/signup">
                     <button className="nav-btn">Sign Up</button>
                   </Link>
-                  <button className="nav-btn primary">Shop Now</button>
+                  <button
+                    className="nav-btn primary"
+                    onClick={() =>
+                      document
+                        .getElementById("products")
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
+                  >
+                    Shop Now
+                  </button>
                 </div>
               </div>
             </nav>
@@ -244,17 +225,15 @@ function Home() {
                             </p>
                             <div className="quantity-controls">
                               <button
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity - 1)
-                                }
+                                onClick={() => updateQuantity(item.id, -1)}
                               >
                                 −
                               </button>
+
                               <span>{item.quantity}</span>
+
                               <button
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity + 1)
-                                }
+                                onClick={() => updateQuantity(item.id, 1)}
                               >
                                 +
                               </button>
@@ -303,11 +282,9 @@ function Home() {
                   destination
                 </p>
                 <div className="hero-cta">
-                 <a href="#products">
-  <button className="btn-primary">
-    Explore Products
-  </button>
-</a>
+                  <a href="#products">
+                    <button className="btn-primary">Explore Products</button>
+                  </a>
                   <button className="btn-secondary">Learn More</button>
                 </div>
               </div>
@@ -444,8 +421,8 @@ function Home() {
             <AIChat />
 
             <footer className="footer" id="footer">
-  <p>&copy; 2025 TechStore. All rights reserved.</p>
-</footer>
+              <p>&copy; 2025 TechStore. All rights reserved.</p>
+            </footer>
           </div>
         </>
       </div>

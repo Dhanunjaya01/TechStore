@@ -1,43 +1,40 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import ProductCard from "./ProductCard";
+import "./Wishlist.css";
+import { Link, useNavigate } from "react-router-dom";
 
-function Wishlist({ products, wishlist, toggleWishlist }) {
+function Wishlist({ products, wishlist, toggleWishlist, addToCart }) {
+  const navigate = useNavigate();
   const wishlistProducts = products.filter((product) =>
     wishlist.includes(product.id),
   );
 
   return (
     <div className="wishlist-page">
-      <div className="wishlist-header">
-        <h1>❤️ My Wishlist</h1>
+      <Link to="/">
+        <button className="back-btn">← Back to Store</button>
+      </Link>
 
-        <Link to="/">
-          <button className="back-btn">🏠 Home</button>
-        </Link>
-      </div>
-
-      <h3>Saved Products: {wishlistProducts.length}</h3>
+      <h1>❤️ My Wishlist ({wishlistProducts.length})</h1>
 
       {wishlistProducts.length === 0 ? (
         <div className="empty-wishlist">
-          <h2>No wishlist items found</h2>
+          <h2>No Favorites Yet</h2>
+          <p>Add products to your favorites ❤️</p>
         </div>
       ) : (
-        <div className="wishlist-grid">
+        <div className="product-grid">
           {wishlistProducts.map((product) => (
-            <div key={product.id} className="wishlist-card">
-              <img src={product.image} alt={product.name} />
-
-              <h3>{product.name}</h3>
-
-              <p>₹{product.price.toLocaleString("en-IN")}</p>
-
-              <button
-                className="remove-btn"
-                onClick={() => toggleWishlist(product.id)}
-              >
-                Remove
-              </button>
-            </div>
+            <ProductCard
+              key={product.id}
+              {...product}
+              isWishlisted={true}
+              onToggleWishlist={() => toggleWishlist(product.id)}
+              onAddToCart={() => {
+                addToCart(product);
+                navigate("/");
+              }}
+            />
           ))}
         </div>
       )}

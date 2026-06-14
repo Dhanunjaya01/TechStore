@@ -144,7 +144,6 @@ const products = [
 
 
 
-
 {
   id: 13,
   name: "Dell XPS 15 Laptop Intel Core Ultra 7",
@@ -180,14 +179,14 @@ const products = [
 },
 {
   id: 16,
-  name: "ASUS ROG Strix G16 Gaming Laptop",
-  price: 129999,
-  originalPrice: 149999,
-  discount: "13% OFF",
+   name: "LG UltraGear 32-inch Gaming Monitor",
+  price: 42999,
+  originalPrice: 49999,
+  discount: "14% OFF",
   rating: 4.7,
-  image: "https://images.unsplash.com/photo-1593642702744-d377ab507dc8",
+  image: "https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc",
   isBestSeller: true,
-  brand: "ASUS",
+  brand: "LG",
 },
 {
   id: 17,
@@ -255,134 +254,6 @@ const products = [
   isBestSeller: true,
   brand: "Sony",
 },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{
-  id: 13,
-  name: "Dell XPS 15 Laptop",
-  price: 159999,
-  originalPrice: 179999,
-  discount: "11% OFF",
-  rating: 4.8,
-  image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
-  isBestSeller: true,
-  brand: "Dell",
-},
-{
-  id: 14,
-  name: "HP Spectre x360 Laptop",
-  price: 149999,
-  originalPrice: 169999,
-  discount: "12% OFF",
-  rating: 4.7,
-  image: "https://images.unsplash.com/photo-1517336714739-489689fd1ca8",
-  isBestSeller: false,
-  brand: "HP",
-},
-{
-  id: 15,
-  name: "Lenovo Legion Pro 5",
-  price: 139999,
-  originalPrice: 159999,
-  discount: "13% OFF",
-  rating: 4.8,
-  image: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef",
-  isBestSeller: true,
-  brand: "Lenovo",
-},
-{
-  id: 16,
-  name: "ASUS ROG Strix G16",
-  price: 129999,
-  originalPrice: 149999,
-  discount: "13% OFF",
-  rating: 4.7,
-  image: "https://images.unsplash.com/photo-1593642702744-d377ab507dc8",
-  isBestSeller: true,
-  brand: "ASUS",
-},
-{
-  id: 17,
-  name: "Acer Predator Helios 16",
-  price: 124999,
-  originalPrice: 139999,
-  discount: "11% OFF",
-  rating: 4.6,
-  image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-  isBestSeller: false,
-  brand: "Acer",
-},
-{
-  id: 18,
-  name: "Logitech MX Master 3S Mouse",
-  price: 9999,
-  originalPrice: 11999,
-  discount: "17% OFF",
-  rating: 4.9,
-  image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46",
-  isBestSeller: true,
-  brand: "Logitech",
-},
-{
-  id: 19,
-  name: "JBL Flip 6 Speaker",
-  price: 11999,
-  originalPrice: 14999,
-  discount: "20% OFF",
-  rating: 4.7,
-  image: "https://images.unsplash.com/photo-1589003077984-894e133dabab",
-  isBestSeller: true,
-  brand: "JBL",
-},
-{
-  id: 20,
-  name: "Apple iPad Pro M4",
-  price: 99999,
-  originalPrice: 109999,
-  discount: "9% OFF",
-  rating: 4.9,
-  image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0",
-  isBestSeller: true,
-  brand: "Apple",
-},
-{
-  id: 21,
-  name: "Samsung Galaxy Buds 3 Pro",
-  price: 18999,
-  originalPrice: 21999,
-  discount: "14% OFF",
-  rating: 4.8,
-  image: "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46",
-  isBestSeller: false,
-  brand: "Samsung",
-},
-{
-  id: 22,
-  name: "Sony Bravia 75-inch Smart TV",
-  price: 229999,
-  originalPrice: 259999,
-  discount: "12% OFF",
-  rating: 4.8,
-  image: "https://images.unsplash.com/photo-1593784991095-a205069470b6",
-  isBestSeller: true,
-  brand: "Sony",
-},
 {
   id: 23,
   name: "Dell UltraSharp 32 Monitor",
@@ -418,17 +289,38 @@ const products = [
 },
 {
   id: 26,
-  name: "OnePlus 13 256GB 5G Smartphone",
-  price: 69999,
-  originalPrice: 79999,
-  discount: "13% OFF",
+  name: "Xiaomi 15 Ultra 512GB",
+  price: 79999,
+  originalPrice: 89999,
+  discount: "11% OFF",
   rating: 4.8,
-  image: "https://oasis.opstatics.com/content/dam/oasis/page/2024/global/product/oneplus-13/black.png",
+  image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
   isBestSeller: true,
-  brand: "OnePlus",
-}
+  brand: "Xiaomi",
+},
 
-
+{
+  id: 27,
+  name: "Nothing Phone (3) 256GB",
+  price: 54999,
+  originalPrice: 59999,
+  discount: "8% OFF",
+  rating: 4.7,
+  image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+  isBestSeller: true,
+  brand: "Nothing",
+},
+{
+  id: 28,
+  name: "Bose QuietComfort Ultra Headphones",
+  price: 34999,
+  originalPrice: 39999,
+  discount: "13% OFF",
+  rating: 4.9,
+  image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
+  isBestSeller: true,
+  brand: "Bose",
+},
 
 
 ];
