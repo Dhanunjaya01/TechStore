@@ -97,8 +97,8 @@ function Home({
             <nav className="navbar">
               <div className="nav-container">
                 <a href="/" className="logo">
-                  <span className="logo-icon">◆</span>
-                  TechStore
+                  <span className="logo-symbol">T</span>
+                  <span className="logo-text">TechStore</span>
                 </a>
 
                 <ul className="nav-links">
