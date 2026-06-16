@@ -48,7 +48,9 @@ export default function ProductCard({
         <div className="price-row">
           <span className="price">₹{price.toLocaleString("en-IN")}</span>
           {originalPrice && (
-            <span className="original-price">₹{originalPrice.toLocaleString("en-IN")}</span>
+            <span className="original-price">
+              ₹{originalPrice.toLocaleString("en-IN")}
+            </span>
           )}
         </div>
 

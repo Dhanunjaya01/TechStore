@@ -6,6 +6,8 @@ import SignUp from "./components/SignUp";
 import Wishlist from "./components/Wishlist";
 import products from "./data";
 import Profile from "./components/Profile";
+import Products from "./components/Products";
+import Cart from "./components/Cart";
 
 function App() {
   const [wishlist, setWishlist] = useState([]);
@@ -65,6 +67,30 @@ function App() {
         }
       />
       <Route path="/profile" element={<Profile />} />
+      <Route
+        path="/products"
+        element={
+          <Products
+            wishlist={wishlist}
+            toggleWishlist={toggleWishlist}
+            addToCart={addToCart}
+            cartItems={cartItems}
+            setCartItems={setCartItems}
+          />
+        }
+      />
+
+      <Route path="/cart" element={<Cart cartItems={cartItems} />} />
+      <Route
+        path="/products"
+        element={
+          <Products
+            wishlist={wishlist}
+            toggleWishlist={toggleWishlist}
+            addToCart={addToCart}
+          />
+        }
+      />
     </Routes>
   );
 }

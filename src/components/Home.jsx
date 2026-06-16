@@ -103,9 +103,9 @@ function Home({
 
                 <ul className="nav-links">
                   <li>
-                    <a href="#products" className="nav-link">
+                    <Link to="/products" className="nav-link">
                       Products
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a href="#" className="nav-link">
@@ -399,35 +399,35 @@ function Home({
               </p>
               <div className="product-grid">
                 {filteredProducts.length > 0 ? (
-                  filteredProducts.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      id={product.id}
-                      name={product.name}
-                      price={product.price}
-                      originalPrice={product.originalPrice}
-                      discount={product.discount}
-                      rating={product.rating}
-                      image={product.image}
-                      isBestSeller={product.isBestSeller}
-                      isWishlisted={wishlist.includes(product.id)}
-                      onAddToCart={() => addToCart(product)}
-                      onToggleWishlist={() => toggleWishlist(product.id)}
-                    />
-                  ))
+                  filteredProducts
+                    .slice(0, 12)
+                    .map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        id={product.id}
+                        name={product.name}
+                        price={product.price}
+                        originalPrice={product.originalPrice}
+                        discount={product.discount}
+                        rating={product.rating}
+                        image={product.image}
+                        isBestSeller={product.isBestSeller}
+                        isWishlisted={wishlist.includes(product.id)}
+                        onAddToCart={() => addToCart(product)}
+                        onToggleWishlist={() => toggleWishlist(product.id)}
+                      />
+                    ))
                 ) : (
                   <div className="no-results">
                     <p>😕 No products found</p>
-                    <button
-                      onClick={() => {
-                        setSearchTerm("");
-                        setSelectedBrand("All");
-                      }}
-                    >
-                      Clear Filters
-                    </button>
                   </div>
                 )}
+              </div>
+
+              <div className="view-all-container">
+                <Link to="/products">
+                  <button className="btn-primary">View All Products</button>
+                </Link>
               </div>
             </section>
 
