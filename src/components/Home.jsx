@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard";
 import products from "../data";
 import "../App.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AIChat from "./AIChat";
 
 function Home({
@@ -13,6 +13,7 @@ function Home({
   addToCart,
   setCartItems,
 }) {
+  const navigate = useNavigate();
   //BRANDS
   const allBrands = [...new Set(products.map((p) => p.brand))];
 
@@ -272,7 +273,10 @@ function Home({
                           ₹{cartTotal.toLocaleString("en-IN")}
                         </span>
                       </div>
-                      <button className="btn-checkout-full">
+                      <button
+                        className="btn-checkout-full"
+                        onClick={() => navigate("/checkout")}
+                      >
                         Proceed to Checkout
                       </button>
                     </div>

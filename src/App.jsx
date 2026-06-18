@@ -7,6 +7,9 @@ import SignUp from "./components/SignUp";
 import Wishlist from "./components/Wishlist";
 import Profile from "./components/Profile";
 import Products from "./components/Products";
+import Checkout from "./components/Checkout";
+import Payment from "./components/Payment";
+import Success from "./components/Success";
 
 import products from "./data";
 
@@ -82,7 +85,9 @@ function App() {
           />
         }
       />
+      <Route path="/payment" element={<Payment />} />
 
+      <Route path="/success" element={<Success />} />
       <Route
         path="/products"
         element={
@@ -95,7 +100,7 @@ function App() {
           />
         }
       />
-
+      <Route path="/checkout" element={<Checkout />} />
       <Route
         path="/wishlist"
         element={
