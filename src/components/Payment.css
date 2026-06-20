@@ -1,36 +1,296 @@
+/* =========================
+   PAYMENT PAGE
+========================= */
+
 .payment-page {
   min-height: 100vh;
-  background: #000814;
+  background: #0f172a;
   color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px;
-}
-
-.payment-card {
-  width: 100%;
-  max-width: 500px;
-  background: #07142a;
   padding: 30px;
-  border-radius: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
-.payment-card label {
-  display: flex;
-  gap: 10px;
-  font-size: 16px;
+.payment-title {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 30px;
+  font-weight: 700;
 }
 
-.pay-btn {
-  background: #0071e3;
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-container {
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  background: #2563eb;
   color: white;
   border: none;
-  padding: 14px;
-  border-radius: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.payment-container {
+  max-width: 1200px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+/* =========================
+   ORDER SUMMARY
+========================= */
+
+.order-summary {
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.order-summary h2 {
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.summary-image {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+
+  background: white;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.summary-details h4 {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.summary-details p {
+  color: #cbd5e1;
+  margin-bottom: 4px;
+}
+
+.summary-total {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(255,255,255,0.1);
+}
+
+.summary-total p,
+.summary-total h3 {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.summary-total h3 {
+  color: #22c55e;
+  font-size: 22px;
+}
+
+/* =========================
+   PAYMENT CARD
+========================= */
+
+.payment-card {
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.payment-card h2 {
+  margin-bottom: 20px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  padding: 15px;
+  margin-bottom: 12px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.payment-option:hover {
+  border-color: #2563eb;
+  background: #172554;
+}
+
+.payment-option input {
+  transform: scale(1.2);
+}
+
+/* =========================
+   PLACE ORDER BUTTON
+========================= */
+
+.pay-btn {
+  width: 100%;
+  margin-top: 20px;
+
+  padding: 15px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #06b6d4
+  );
+
+  color: white;
+
   font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.pay-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+}
+
+/* =========================
+   EMPTY CART
+========================= */
+
+.empty-cart {
+  text-align: center;
+  color: #94a3b8;
+  padding: 30px 0;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1024px) {
+
+  .payment-container {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-title {
+    font-size: 30px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+  .payment-page {
+    padding: 15px;
+  }
+
+  .payment-title {
+    font-size: 24px;
+  }
+
+  .payment-container {
+    gap: 15px;
+  }
+
+  .order-summary,
+  .payment-card {
+    padding: 18px;
+  }
+
+  .summary-image {
+    width: 70px;
+    height: 70px;
+  }
+
+  .summary-details h4 {
+    font-size: 14px;
+  }
+
+  .summary-details p {
+    font-size: 12px;
+  }
+
+  .pay-btn {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  /* Small Back Button */
+
+  .back-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media (max-width: 480px) {
+
+  .payment-page {
+    padding: 10px;
+  }
+
+  .payment-title {
+    font-size: 22px;
+  }
+
+  .summary-item {
+    gap: 10px;
+  }
+
+  .summary-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .back-btn {
+    padding: 4px 8px;
+    font-size: 10px;
+    border-radius: 5px;
+  }
 }

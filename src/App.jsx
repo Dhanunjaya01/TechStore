@@ -10,6 +10,7 @@ import Products from "./components/Products";
 import Checkout from "./components/Checkout";
 import Payment from "./components/Payment";
 import Success from "./components/Success";
+import MyOrders from "./components/MyOrders";
 
 import products from "./data";
 
@@ -85,7 +86,7 @@ function App() {
           />
         }
       />
-      <Route path="/payment" element={<Payment />} />
+      <Route path="/payment" element={<Payment cartItems={cartItems} />} />
 
       <Route path="/success" element={<Success />} />
       <Route
@@ -101,6 +102,7 @@ function App() {
         }
       />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/orders" element={<MyOrders />} />
       <Route
         path="/wishlist"
         element={

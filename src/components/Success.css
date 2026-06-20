@@ -1,25 +1,131 @@
 .success-page {
   min-height: 100vh;
-  background: #000814;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #0f172a;
+  color: white;
+  padding: 30px;
 }
 
 .success-card {
-  background: #07142a;
-  padding: 40px;
+  max-width: 900px;
+  margin: auto;
+  background: #1e293b;
   border-radius: 20px;
+  padding: 35px;
+}
+
+.success-icon {
+  font-size: 70px;
   text-align: center;
+}
+
+.success-card h1 {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.success-text {
+  text-align: center;
+  color: #cbd5e1;
+  margin-bottom: 25px;
+}
+
+.order-details {
+  margin-bottom: 30px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background: #0f172a;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.ordered-title {
+  margin-bottom: 15px;
+}
+
+.ordered-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #0f172a;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.ordered-item img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  background: white;
+  border-radius: 8px;
+}
+
+.ordered-item div {
+  flex: 1;
+}
+
+.success-buttons {
+  margin-top: 25px;
+  display: flex;
+  gap: 15px;
+}
+
+.continue-btn,
+.orders-btn {
+  flex: 1;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.continue-btn {
+  background: #2563eb;
   color: white;
 }
 
-.success-card button {
-  margin-top: 20px;
-  padding: 12px 24px;
-  border: none;
-  background: #0071e3;
+.orders-btn {
+  background: #22c55e;
   color: white;
-  border-radius: 10px;
+}
+
+.back-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
   cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .success-page {
+    padding: 15px;
+  }
+
+  .success-card {
+    padding: 20px;
+  }
+
+  .success-buttons {
+    flex-direction: column;
+  }
+
+  .ordered-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .back-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
 }
