@@ -220,3 +220,14 @@
     font-size: 2rem;
   }
 }
+
+
+
+.product-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-link:hover .product-name {
+  color: #2563eb;
+}

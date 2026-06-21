@@ -27,16 +27,16 @@ function Payment({ cartItems }) {
 
   // Create order object
   const order = {
-    orderId: "TS" + Date.now(),
-    paymentMethod: paymentMethod,
-    date: new Date().toLocaleDateString(),
-    items: cartItems,
-    subtotal,
-    tax,
-    delivery,
-    total,
-    status: "Confirmed",
-  };
+  orderId: "TS" + Date.now(),
+  paymentMethod,
+  date: new Date().toLocaleDateString(),
+  items: cartItems,
+  subtotal,
+  tax,
+  delivery,
+  total,
+  status: "Order Confirmed",
+};
 
   // Save latest order
   localStorage.setItem(

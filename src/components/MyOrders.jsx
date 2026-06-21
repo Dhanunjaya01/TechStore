@@ -71,7 +71,9 @@ function MyOrders() {
                 ))}
               </div>
 
-              <button className="track-btn">Track Order</button>
+              <Link to="/track-order">
+                <button className="track-btn">Track Order</button>
+              </Link>
             </div>
           ))
       )}

@@ -1,4 +1,5 @@
 import "./ProductCard.css";
+import { Link } from "react-router-dom";
 
 export default function ProductCard({
   id,
@@ -26,13 +27,26 @@ export default function ProductCard({
       </button>
 
       {/* Product Image */}
-      <div className="image-container">
-        <img src={image} alt={name} className="product-image" />
-      </div>
+     <Link to={`/product/${id}`}>
+  <div className="image-container">
+    <img
+      src={image}
+      alt={name}
+      className="product-image"
+    />
+  </div>
+</Link>
 
       {/* Content */}
       <div className="card-content">
-        <h3 className="product-name">{name}</h3>
+        <Link
+  to={`/product/${id}`}
+  className="product-link"
+>
+  <h3 className="product-name">
+    {name}
+  </h3>
+</Link>
 
         {/* Rating */}
         <div className="rating">

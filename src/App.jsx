@@ -11,6 +11,16 @@ import Checkout from "./components/Checkout";
 import Payment from "./components/Payment";
 import Success from "./components/Success";
 import MyOrders from "./components/MyOrders";
+import TrackOrder from "./components/TrackOrder";
+import ProductDetails from "./components/ProductDetails";
+import AdminDashboard from "./components/AdminDashboard";
+import ManageProducts from "./components/ManageProducts";
+import AddProduct from "./components/AddProduct";
+import EditProduct from "./components/EditProduct";
+import ManageOrders from "./components/ManageOrders";
+import ManageUsers from "./components/ManageUsers";
+import AdminProtected from "./components/AdminProtected";
+import AdminLogin from "./components/AdminLogin";
 
 import products from "./data";
 
@@ -89,6 +99,58 @@ function App() {
       <Route path="/payment" element={<Payment cartItems={cartItems} />} />
 
       <Route path="/success" element={<Success />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+
+      <Route
+        path="/admin"
+        element={
+          <AdminProtected>
+            <AdminDashboard />
+          </AdminProtected>
+        }
+      />
+      <Route
+        path="/manage-products"
+        element={
+          <AdminProtected>
+            <ManageProducts />
+          </AdminProtected>
+        }
+      />
+
+      <Route
+        path="/manage-orders"
+        element={
+          <AdminProtected>
+            <ManageOrders />
+          </AdminProtected>
+        }
+      />
+
+      <Route
+        path="/manage-users"
+        element={
+          <AdminProtected>
+            <ManageUsers />
+          </AdminProtected>
+        }
+      />
+      <Route path="/manage-users" element={<ManageUsers />} />
+      <Route path="/manage-orders" element={<ManageOrders />} />
+      <Route path="/edit-product/:id" element={<EditProduct />} />
+      <Route path="/admin" element={<AdminDashboard />} />
+      <Route
+        path="/product/:id"
+        element={
+          <ProductDetails
+            addToCart={addToCart}
+            wishlist={wishlist}
+            toggleWishlist={toggleWishlist}
+          />
+        }
+      />
+      <Route path="/add-product" element={<AddProduct />} />
+      <Route path="/track-order" element={<TrackOrder />} />
       <Route
         path="/products"
         element={
@@ -102,6 +164,7 @@ function App() {
         }
       />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/manage-products" element={<ManageProducts />} />
       <Route path="/orders" element={<MyOrders />} />
       <Route
         path="/wishlist"

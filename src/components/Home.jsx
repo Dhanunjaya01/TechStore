@@ -178,7 +178,11 @@ function Home({
                         ✨ <span className="signup-text">Sign Up</span>
                       </button>
                     </Link>
+                    
                   )}
+                   <Link to="/admin">
+                    <button className="nav-btn">📊 Admin</button>
+                  </Link>
                   <button
                     className="nav-btn primary"
                     onClick={() =>
@@ -189,6 +193,7 @@ function Home({
                   >
                     Shop Now
                   </button>
+                 
                 </div>
               </div>
             </nav>

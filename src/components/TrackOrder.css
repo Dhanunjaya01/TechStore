@@ -1,0 +1,89 @@
+.track-page {
+  min-height: 100vh;
+  background: #0f172a;
+  color: white;
+  padding: 30px;
+}
+
+.track-card {
+  max-width: 900px;
+  margin: auto;
+
+  background: #1e293b;
+
+  border-radius: 20px;
+  padding: 30px;
+}
+
+.order-info {
+  margin: 30px 0;
+}
+
+.order-info p {
+  margin-bottom: 10px;
+}
+
+.timeline {
+  margin-top: 40px;
+}
+
+.timeline-step {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 25px;
+
+  opacity: 0.5;
+}
+
+.timeline-step.completed {
+  opacity: 1;
+}
+
+.circle {
+  width: 35px;
+  height: 35px;
+
+  border-radius: 50%;
+
+  border: 2px solid #64748b;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline-step.completed .circle {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.back-btn {
+  background: #2563eb;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 8px 15px;
+
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+
+  .track-page {
+    padding: 15px;
+  }
+
+  .track-card {
+    padding: 20px;
+  }
+
+  .back-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+}
