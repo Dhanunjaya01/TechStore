@@ -1,69 +1,69 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
+import { register } from "../services/authService";
 
 function SignUp() {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [gender, setGender] = useState("Male");
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Name Validation
-    if (name.trim().length < 3) {
-      alert("❌ Name must contain at least 3 characters");
+    if (!firstName.trim()) {
+      alert("First Name is required");
       return;
     }
 
-    // Email Validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      alert("❌ Please enter a valid email address");
+    if (!lastName.trim()) {
+      alert("Last Name is required");
       return;
     }
 
-    // Password Validation
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
-    if (!passwordRegex.test(password)) {
-      alert(
-        "❌ Password must contain:\n\n• Minimum 8 characters\n• 1 Uppercase Letter\n• 1 Lowercase Letter\n• 1 Number",
-      );
+    if (!email.trim()) {
+      alert("Email is required");
       return;
     }
 
-    // Confirm Password Validation
+    if (!phoneNo.trim()) {
+      alert("Phone Number is required");
+      return;
+    }
+
+    if (!dateOfBirth) {
+      alert("Select Date of Birth");
+      return;
+    }
+
     if (password !== confirmPassword) {
-      alert("❌ Passwords do not match");
+      alert("Passwords do not match");
       return;
     }
 
-    // Check Existing User
-    const existingUser = JSON.parse(localStorage.getItem("user"));
+    try {
+      await register({
+        firstName,
+        lastName,
+        email,
+        password,
+        phoneNo,
+        gender,
+        dateOfBirth,
+      });
 
-    if (existingUser && existingUser.email === email) {
-      alert("❌ Account already exists with this email");
-      return;
+      alert("Registration Successful");
+
+      navigate("/login");
+    } catch (error) {
+      alert(error.message);
     }
-
-    const user = {
-      name,
-      email,
-      password,
-    };
-
-    localStorage.setItem("user", JSON.stringify(user));
-
-    localStorage.setItem("isLoggedIn", "true");
-
-    alert(`🎉 Welcome ${name}! Account Created Successfully`);
-
-    navigate("/profile");
   };
 
   return (
@@ -79,9 +79,18 @@ function SignUp() {
         <div className="input-group">
           <input
             type="text"
-            placeholder="Full Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+
+        <div className="input-group">
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
           />
         </div>
 
@@ -91,6 +100,28 @@ function SignUp() {
             placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="input-group">
+          <input
+            type="text"
+            placeholder="Phone Number"
+            value={phoneNo}
+            onChange={(e) => setPhoneNo(e.target.value)}
+          />
+        </div>
+        <div className="input-group">
+          <select value={gender} onChange={(e) => setGender(e.target.value)}>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div className="input-group">
+          <input
+            type="date"
+            value={dateOfBirth}
+            onChange={(e) => setDateOfBirth(e.target.value)}
           />
         </div>
 

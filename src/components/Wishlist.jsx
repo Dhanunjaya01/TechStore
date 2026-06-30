@@ -1,13 +1,53 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import "./Wishlist.css";
 import { Link, useNavigate } from "react-router-dom";
+import { getAllProducts } from "../services/productService";
 
-function Wishlist({ products, wishlist, toggleWishlist, addToCart }) {
+function Wishlist({ wishlist, toggleWishlist, addToCart }) {
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const data = await getAllProducts();
+
+        const formattedProducts = data.map((product) => ({
+          id: product.productId,
+          name: product.productName,
+          brand: product.brand,
+          category: product.category,
+          description: product.description,
+          price: product.price,
+          discount: product.discountPercent,
+          rating: product.rating,
+          stock: product.stock,
+          image: product.imageUrl,
+        }));
+
+        setProducts(formattedProducts);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProducts();
+  }, []);
   const wishlistProducts = products.filter((product) =>
     wishlist.includes(product.id),
   );
+  if (loading) {
+
+    return (
+        <h2 style={{ textAlign: "center" }}>
+            Loading Wishlist...
+        </h2>
+    );
+
+}
 
   return (
     <div className="wishlist-page">

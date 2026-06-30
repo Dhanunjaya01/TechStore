@@ -1,10 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getOrderDetails } from "../services/orderDetailsService";
 import "./TrackOrder.css";
 
 function TrackOrder() {
-  const order = JSON.parse(localStorage.getItem("latestOrder")) || {};
+  const { orderId } = useParams();
 
-  const status = order.status || "Order Confirmed";
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    async function loadItems() {
+      try {
+        const data = await getOrderDetails(orderId);
+
+        setItems(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadItems();
+  }, [orderId]);
+  const status = "Order Confirmed";
 
   const steps = [
     "Order Confirmed",
@@ -29,21 +45,28 @@ function TrackOrder() {
 
         <div className="order-info">
           <p>
-            <strong>Order ID:</strong> {order.orderId}
+            <strong>Order ID:</strong> {orderId}
           </p>
+        </div>
 
-          <p>
-            <strong>Order Date:</strong> {order.date}
-          </p>
+        <div className="order-products">
+          {items.map((item) => (
+            <div className="product-row" key={item.orderItemId}>
+              <img src={item.imageUrl} alt={item.productName} />
 
-          <p>
-            <strong>Payment:</strong> {order.paymentMethod}
-          </p>
+              <div className="product-details">
+                <h4>{item.productName}</h4>
 
-          <p>
-            <strong>Total:</strong> ₹
-            {Number(order.total).toLocaleString("en-IN")}
-          </p>
+                <p>Quantity : {item.quantity}</p>
+
+                <p>Price : ₹{Number(item.price).toLocaleString("en-IN")}</p>
+
+                <p>
+                  Subtotal : ₹{Number(item.subtotal).toLocaleString("en-IN")}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="timeline">

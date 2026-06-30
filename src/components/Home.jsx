@@ -1,8 +1,9 @@
-import React from "react";
 import ProductCard from "./ProductCard";
-import products from "../data";
+import { useState, useEffect } from "react";
+import { getAllProducts } from "../services/productService";
 import "../App.css";
-import { useState } from "react";
+import CartSidebar from "./CartSidebar";
+
 import { Link, useNavigate } from "react-router-dom";
 import AIChat from "./AIChat";
 
@@ -14,6 +15,36 @@ function Home({
   setCartItems,
 }) {
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const data = await getAllProducts();
+
+        const formattedProducts = data.map((product) => ({
+          id: product.productId,
+          name: product.productName,
+          brand: product.brand,
+          category: product.category,
+          description: product.description,
+          price: product.price,
+          discount: product.discountPercent,
+          rating: product.rating,
+          stock: product.stock,
+          image: product.imageUrl,
+        }));
+
+        setProducts(formattedProducts);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProducts();
+  }, []);
   //BRANDS
   const allBrands = [...new Set(products.map((p) => p.brand))];
 
@@ -31,32 +62,7 @@ function Home({
 
   // NEW: Cart Sidebar Toggle
   const [isCartOpen, setIsCartOpen] = useState(false);
-
-  // NEW: Remove item from cart
-  function removeFromCart(productId) {
-    setCartItems((prevItems) =>
-      prevItems.filter((item) => item.id !== productId),
-    );
-  }
-  // NEW: Update quantity in cart
-  function updateQuantity(productId, change) {
-    setCartItems((prevItems) =>
-      prevItems
-        .map((item) =>
-          item.id === productId
-            ? {
-                ...item,
-                quantity: item.quantity + change,
-              }
-            : item,
-        )
-        .filter((item) => item.quantity > 0),
-    );
-  }
-  //Calculate Total number of Cart ITEMS
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
-
-  //CALCULATE TOTAL PRICE
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
@@ -178,9 +184,8 @@ function Home({
                         ✨ <span className="signup-text">Sign Up</span>
                       </button>
                     </Link>
-                    
                   )}
-                   <Link to="/admin">
+                  <Link to="/admin">
                     <button className="nav-btn">📊 Admin</button>
                   </Link>
                   <button
@@ -193,102 +198,16 @@ function Home({
                   >
                     Shop Now
                   </button>
-                 
                 </div>
               </div>
             </nav>
 
-            {/* Cart Sidebar */}
-            {isCartOpen && (
-              <div
-                className="cart-overlay"
-                onClick={() => setIsCartOpen(false)}
-              >
-                <div
-                  className="cart-sidebar"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="cart-header">
-                    <h2>Your Cart ({cartCount})</h2>
-                    <button
-                      className="cart-close"
-                      onClick={() => setIsCartOpen(false)}
-                    >
-                      ✕
-                    </button>
-                  </div>
-
-                  <div className="cart-items">
-                    {cartItems.length === 0 ? (
-                      <div className="cart-empty">
-                        <span className="cart-empty-icon">🛒</span>
-                        <p>Your cart is empty</p>
-                        <button
-                          className="btn-primary"
-                          onClick={() => setIsCartOpen(false)}
-                        >
-                          Continue Shopping
-                        </button>
-                      </div>
-                    ) : (
-                      cartItems.map((item) => (
-                        <div key={item.id} className="cart-item">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="cart-item-image"
-                          />
-                          <div className="cart-item-details">
-                            <h4>{item.name}</h4>
-                            <p className="cart-item-price">
-                              ₹{item.price.toLocaleString("en-IN")}
-                            </p>
-                            <div className="quantity-controls">
-                              <button
-                                onClick={() => updateQuantity(item.id, -1)}
-                              >
-                                −
-                              </button>
-
-                              <span>{item.quantity}</span>
-
-                              <button
-                                onClick={() => updateQuantity(item.id, 1)}
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
-                          <button
-                            className="cart-item-remove"
-                            onClick={() => removeFromCart(item.id)}
-                          >
-                            🗑️
-                          </button>
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                  {cartItems.length > 0 && (
-                    <div className="cart-footer">
-                      <div className="cart-subtotal">
-                        <span>Subtotal:</span>
-                        <span className="cart-subtotal-price">
-                          ₹{cartTotal.toLocaleString("en-IN")}
-                        </span>
-                      </div>
-                      <button
-                        className="btn-checkout-full"
-                        onClick={() => navigate("/checkout")}
-                      >
-                        Proceed to Checkout
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+            <CartSidebar
+              isCartOpen={isCartOpen}
+              setIsCartOpen={setIsCartOpen}
+              cartItems={cartItems}
+              setCartItems={setCartItems}
+            />
 
             {/* Hero Section */}
             <section className="hero">
@@ -409,7 +328,7 @@ function Home({
               <div className="product-grid">
                 {filteredProducts.length > 0 ? (
                   filteredProducts
-                    .slice(0, 12)
+                    .slice(0, 8)
                     .map((product) => (
                       <ProductCard
                         key={product.id}

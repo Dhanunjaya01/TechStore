@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Checkout.css";
 
-function Checkout() {
+function Checkout({ cartItems }) {
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -25,6 +25,7 @@ function Checkout() {
 
   const handleSubmit = () => {
     const { fullName, phone, email, address, city, state, pincode } = formData;
+
     if (
       !fullName ||
       !phone ||
@@ -39,6 +40,10 @@ function Checkout() {
     }
 
     setError("");
+
+    // Save address temporarily
+    localStorage.setItem("checkoutAddress", JSON.stringify(formData));
+
     navigate("/payment");
   };
 

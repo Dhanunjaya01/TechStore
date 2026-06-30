@@ -1,9 +1,47 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getOrders } from "../services/orderHistoryService";
 import "./MyOrders.css";
 
 function MyOrders() {
-  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    async function loadOrders() {
+      try {
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
+        if (!loggedInUser) {
+          setLoading(false);
+
+          return;
+        }
+
+        const data = await getOrders(loggedInUser.userId);
+
+        setOrders(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadOrders();
+  }, []);
+  if (loading) {
+    return (
+      <h2
+        style={{
+          color: "white",
+          textAlign: "center",
+          marginTop: "100px",
+        }}
+      >
+        Loading Orders...
+      </h2>
+    );
+  }
   return (
     <div className="orders-page">
       {/* Back Button */}
@@ -54,24 +92,10 @@ function MyOrders() {
               </div>
 
               <div className="order-products">
-                {order.items?.map((item) => (
-                  <div className="product-row" key={item.id}>
-                    <img src={item.image} alt={item.name} />
-
-                    <div className="product-details">
-                      <h4>{item.name}</h4>
-
-                      <p>Qty: {item.quantity}</p>
-                    </div>
-
-                    <strong>
-                      ₹{(item.price * item.quantity).toLocaleString("en-IN")}
-                    </strong>
-                  </div>
-                ))}
+                <p>Products will be displayed in the next step.</p>
               </div>
 
-              <Link to="/track-order">
+              <Link to={`/track-order/${order.orderId}`}>
                 <button className="track-btn">Track Order</button>
               </Link>
             </div>

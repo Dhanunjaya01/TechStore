@@ -1,62 +1,83 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Payment.css";
+import { checkout } from "../services/checkoutService";
 
-function Payment({ cartItems }) {
+function Payment({ cartItems, setCartItems }) {
   const navigate = useNavigate();
 
   const [paymentMethod, setPaymentMethod] = useState("");
 
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
 
   const tax = Math.round(subtotal * 0.02);
   const delivery = subtotal > 500 ? 0 : 50;
   const total = subtotal + tax + delivery;
 
-  const handlePlaceOrder = () => {
-  if (!paymentMethod) {
-    alert("⚠️ Please select a payment method");
-    return;
-  }
+  const handlePlaceOrder = async () => {
+    if (!paymentMethod) {
+      alert("Please select a payment method");
+      return;
+    }
 
-  // Save payment method
-  localStorage.setItem("paymentMethod", paymentMethod);
+    try {
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
-  // Create order object
-  const order = {
-  orderId: "TS" + Date.now(),
-  paymentMethod,
-  date: new Date().toLocaleDateString(),
-  items: cartItems,
-  subtotal,
-  tax,
-  delivery,
-  total,
-  status: "Order Confirmed",
-};
+      const address = JSON.parse(localStorage.getItem("checkoutAddress"));
 
-  // Save latest order
-  localStorage.setItem(
-    "latestOrder",
-    JSON.stringify(order)
-  );
+      const checkoutRequest = {
+        userId: loggedInUser.userId,
 
-  // Save all orders history
-  const existingOrders =
-    JSON.parse(localStorage.getItem("orders")) || [];
+        totalAmount: total,
 
-  existingOrders.push(order);
+        address: {
+          fullName: address.fullName,
+          phoneNo: address.phone,
+          houseNo: address.address,
+          street: address.address,
+          landmark: "",
+          city: address.city,
+          state: address.state,
+          pincode: address.pincode,
+          country: "India",
+          addressType: "Home",
+          default: true,
+        },
 
-  localStorage.setItem(
-    "orders",
-    JSON.stringify(existingOrders)
-  );
+        payment: {
+          paymentMethod: paymentMethod,
 
-  navigate("/success");
-};
+          amount: total,
+
+          paymentStatus:
+            paymentMethod === "Cash On Delivery" ? "Pending" : "Paid",
+        },
+
+        cartItems: cartItems,
+      };
+
+      const response = await checkout(checkoutRequest);
+
+      if (response.success) {
+        setCartItems([]);
+
+        localStorage.removeItem("checkoutAddress");
+
+        alert("🎉 Order Placed Successfully");
+
+        navigate("/success");
+      } else {
+        alert("Checkout Failed");
+      }
+    } catch (error) {
+      console.error(error);
+
+      alert("Server Error");
+    }
+  };
 
   return (
     <div className="payment-page">
@@ -69,17 +90,12 @@ function Payment({ cartItems }) {
       <h1 className="payment-title">Secure Payment</h1>
 
       <div className="payment-container">
-
         <div className="order-summary">
           <h2>Order Summary</h2>
 
           {cartItems.map((item) => (
             <div key={item.id} className="summary-item">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="summary-image"
-              />
+              <img src={item.image} alt={item.name} className="summary-image" />
 
               <div className="summary-details">
                 <h4>{item.name}</h4>
@@ -102,9 +118,7 @@ function Payment({ cartItems }) {
 
             <p>
               <span>Delivery</span>
-              <span>
-                {delivery === 0 ? "FREE" : `₹${delivery}`}
-              </span>
+              <span>{delivery === 0 ? "FREE" : `₹${delivery}`}</span>
             </p>
 
             <h3>
@@ -172,14 +186,10 @@ function Payment({ cartItems }) {
             🚚 Cash On Delivery
           </label>
 
-          <button
-            className="pay-btn"
-            onClick={handlePlaceOrder}
-          >
+          <button className="pay-btn" onClick={handlePlaceOrder}>
             Place Order
           </button>
         </div>
-
       </div>
     </div>
   );

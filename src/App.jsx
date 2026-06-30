@@ -1,5 +1,11 @@
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import {
+  getCart,
+  addToCart as addToCartAPI,
+  updateCart,
+  deleteCart,
+} from "./services/cartService";
 
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -22,8 +28,6 @@ import ManageUsers from "./components/ManageUsers";
 import AdminProtected from "./components/AdminProtected";
 import AdminLogin from "./components/AdminLogin";
 
-import products from "./data";
-
 function App() {
   // WISHLIST PERSISTENCE
   const [wishlist, setWishlist] = useState(() => {
@@ -32,15 +36,38 @@ function App() {
   });
 
   // CART PERSISTENCE
-  const [cartItems, setCartItems] = useState(() => {
-    const savedCart = localStorage.getItem("cartItems");
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
-
+  const [cartItems, setCartItems] = useState([]);
   // SAVE WISHLIST
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
+  useEffect(() => {
+    async function loadCart() {
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+      if (!loggedInUser) return;
+
+      try {
+        const cart = await getCart(loggedInUser.userId);
+
+        const formattedCart = cart.map((item) => ({
+          cartId: item.cartId,
+          id: item.productId,
+          name: item.productName,
+          brand: item.brand,
+          price: item.price,
+          image: item.imageUrl,
+          quantity: item.quantity,
+        }));
+
+        setCartItems(formattedCart);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadCart();
+  }, []);
 
   // SAVE CART
   useEffect(() => {
@@ -57,29 +84,44 @@ function App() {
   }
 
   // ADD TO CART
-  function addToCart(product) {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
+  async function addToCart(product) {
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.id === product.id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
-            : item,
-        );
-      }
+    if (!loggedInUser) {
+      alert("Please login first");
 
-      return [
-        ...prevItems,
-        {
-          ...product,
-          quantity: 1,
-        },
-      ];
-    });
+      return;
+    }
+
+    try {
+      await addToCartAPI({
+        userId: loggedInUser.userId,
+
+        productId: product.id,
+
+        quantity: 1,
+      });
+
+      const cart = await getCart(loggedInUser.userId);
+
+      const formattedCart = cart.map((item) => ({
+        cartId: item.cartId,
+        id: item.productId,
+        name: item.productName,
+        brand: item.brand,
+        price: item.price,
+        image: item.imageUrl,
+        quantity: item.quantity,
+      }));
+
+      setCartItems(formattedCart);
+
+      alert("Product Added To Cart");
+    } catch (error) {
+      console.error(error);
+
+      alert("Unable To Add Product");
+    }
   }
 
   return (
@@ -96,7 +138,10 @@ function App() {
           />
         }
       />
-      <Route path="/payment" element={<Payment cartItems={cartItems} />} />
+      <Route
+        path="/payment"
+        element={<Payment cartItems={cartItems} setCartItems={setCartItems} />}
+      />
 
       <Route path="/success" element={<Success />} />
       <Route path="/admin-login" element={<AdminLogin />} />
@@ -150,7 +195,7 @@ function App() {
         }
       />
       <Route path="/add-product" element={<AddProduct />} />
-      <Route path="/track-order" element={<TrackOrder />} />
+      <Route path="/track-order/:orderId" element={<TrackOrder />} />
       <Route
         path="/products"
         element={
@@ -163,21 +208,19 @@ function App() {
           />
         }
       />
-      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/checkout" element={<Checkout cartItems={cartItems} />} />
       <Route path="/manage-products" element={<ManageProducts />} />
       <Route path="/orders" element={<MyOrders />} />
       <Route
         path="/wishlist"
         element={
           <Wishlist
-            products={products}
             wishlist={wishlist}
             toggleWishlist={toggleWishlist}
             addToCart={addToCart}
           />
         }
       />
-
       <Route path="/profile" element={<Profile />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />

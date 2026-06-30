@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/authService";
 import "./Auth.css";
 
 function Login() {
@@ -8,27 +9,31 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!email.trim()) {
-      alert("❌ Email is required");
+      alert("Email is required");
       return;
     }
 
     if (!password.trim()) {
-      alert("❌ Password is required");
+      alert("Password is required");
       return;
     }
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    try {
+      const response = await login(email, password);
 
-    if (user && user.email === email && user.password === password) {
+      localStorage.setItem("loggedInUser", JSON.stringify(response.user));
+
       localStorage.setItem("isLoggedIn", "true");
 
-      alert(`🎉 Welcome Back ${user.name}!`);
+      alert(response.message);
 
       navigate("/profile");
+    } catch (error) {
+      alert(error.message);
     }
   };
 

@@ -4,11 +4,14 @@ import "./Profile.css";
 function Profile() {
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
   const logout = () => {
+    localStorage.removeItem("loggedInUser");
+
     localStorage.removeItem("isLoggedIn");
-    navigate("/");
+
+    navigate("/login");
   };
 
   return (
@@ -20,11 +23,14 @@ function Profile() {
         {/* Left Sidebar */}
         <div className="profile-sidebar">
           <div className="user-card">
-            <div className="avatar">{user?.name?.charAt(0).toUpperCase()}</div>
-
+            <div className="avatar">
+              {user?.firstName?.charAt(0).toUpperCase()}
+            </div>
             <div>
               <p>Hello,</p>
-              <h3>{user?.name}</h3>
+              <h3>
+                {user?.firstName} {user?.lastName}
+              </h3>
             </div>
           </div>
 
@@ -59,7 +65,10 @@ function Profile() {
 
             <div className="info-row">
               <label>Name</label>
-              <input value={user?.name} readOnly />
+              <input
+                value={`${user?.firstName || ""} ${user?.lastName || ""}`}
+                readOnly
+              />
             </div>
 
             <div className="info-row">
